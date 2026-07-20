@@ -1,22 +1,14 @@
-<<<<<<< HEAD
 import { Prisma } from "@prisma/client";
-=======
->>>>>>> origin/delvelopment
 import { NextFunction, Request, Response } from "express"
 import httpStatus from "http-status"
 
 const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     console.log(err)
-<<<<<<< HEAD
     let statusCode: number = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
-=======
-    let statusCode = httpStatus.INTERNAL_SERVER_ERROR;
->>>>>>> origin/delvelopment
     let success = false;
     let message = err.message || "Something went wrong!";
     let error = err;
 
-<<<<<<< HEAD
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === "P2002") {
             message = "Duplicate key error",
@@ -51,8 +43,6 @@ const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
             statusCode = httpStatus.BAD_REQUEST
     }
 
-=======
->>>>>>> origin/delvelopment
     res.status(statusCode).json({
         success,
         message,

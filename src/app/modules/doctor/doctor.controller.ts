@@ -1,17 +1,9 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
-<<<<<<< HEAD
-=======
-import { IJWTPayload } from "../../types/common";
->>>>>>> part-4
 import pick from "../../helper/pick";
 import { DoctorService } from "./doctor.service";
 import sendResponse from "../../shared/sendResponse";
 import { doctorFilterableFields } from "./doctor.constant";
-<<<<<<< HEAD
-=======
-import { ca } from "zod/v4/locales";
->>>>>>> part-4
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);

@@ -14,7 +14,6 @@ enum Gender {
     MALE
     FEMALE
 }
-<<<<<<< HEAD
 
 enum AppointmentStatus {
     SCHEDULED
@@ -27,5 +26,3 @@ enum PaymentStatus {
     PAID
     UNPAID
 }
-=======
->>>>>>> origin/delvelopment

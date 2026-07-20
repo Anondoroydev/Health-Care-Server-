@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { stripe } from "../../helper/stripe";
 import { prisma } from "../../shared/prisma";
 import { IJWTPayload } from "../../types/common";
@@ -7,11 +6,6 @@ import { IOptions, paginationHelper } from "../../helper/paginationHelper";
 import { AppointmentStatus, Prisma, UserRole } from "@prisma/client";
 import ApiError from "../../errors/ApiError";
 import httpStatus from 'http-status'
-=======
-import { prisma } from "../../shared/prisma";
-import { IJWTPayload } from "../../types/common";
-import { v4 as uuidv4 } from 'uuid';
->>>>>>> part-4
 
 const createAppointment = async (user: IJWTPayload, payload: { doctorId: string, scheduleId: string }) => {
     const patientData = await prisma.patient.findUniqueOrThrow({
@@ -61,11 +55,7 @@ const createAppointment = async (user: IJWTPayload, payload: { doctorId: string,
 
         const transactionId = uuidv4();
 
-<<<<<<< HEAD
         const paymentData = await tnx.payment.create({
-=======
-        await tnx.payment.create({
->>>>>>> part-4
             data: {
                 appointmentId: appointmentData.id,
                 amount: doctorData.appointmentFee,
@@ -73,7 +63,6 @@ const createAppointment = async (user: IJWTPayload, payload: { doctorId: string,
             }
         })
 
-<<<<<<< HEAD
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             mode: "payment",
@@ -99,16 +88,12 @@ const createAppointment = async (user: IJWTPayload, payload: { doctorId: string,
         });
 
         return { paymentUrl: session.url };
-=======
-        return appointmentData;
->>>>>>> part-4
     })
 
 
     return result;
 };
 
-<<<<<<< HEAD
 
 const getMyAppointment = async (user: IJWTPayload, filters: any, options: IOptions) => {
     const { page, limit, skip, sortBy, sortOrder } = paginationHelper.calculatePagination(options);
@@ -202,8 +187,4 @@ export const AppointmentService = {
     createAppointment,
     getMyAppointment,
     updateAppointmentStatus
-=======
-export const AppointmentService = {
-    createAppointment,
->>>>>>> part-4
 };
