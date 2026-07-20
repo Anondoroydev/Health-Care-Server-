@@ -3,10 +3,7 @@ import catchAsync from "../../shared/catchAsync";
 import { AppointmentService } from "./appointment.service";
 import sendResponse from "../../shared/sendResponse";
 import { IJWTPayload } from "../../types/common";
-<<<<<<< HEAD
 import pick from "../../helper/pick";
-=======
->>>>>>> part-4
 
 
 const createAppointment = catchAsync(async (req: Request & { user?: IJWTPayload }, res: Response) => {
@@ -20,7 +17,6 @@ const createAppointment = catchAsync(async (req: Request & { user?: IJWTPayload 
         data: result
     })
 });
-<<<<<<< HEAD
 
 const getMyAppointment = catchAsync(async (req: Request & { user?: IJWTPayload }, res: Response) => {
     const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
@@ -56,9 +52,4 @@ export const AppointmentController = {
     createAppointment,
     getMyAppointment,
     updateAppointmentStatus
-=======
-
-export const AppointmentController = {
-    createAppointment,
->>>>>>> part-4
 }
