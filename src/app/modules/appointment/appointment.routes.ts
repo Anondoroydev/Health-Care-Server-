@@ -5,6 +5,7 @@ import { UserRole } from "@prisma/client";
 
 const router = express.Router();
 
+<<<<<<< HEAD
 router.get(
     "/my-appointments",
     auth(UserRole.PATIENT, UserRole.DOCTOR),
@@ -23,4 +24,12 @@ router.patch(
     AppointmentController.updateAppointmentStatus
 )
 
+=======
+router.post(
+    "/",
+    auth(UserRole.PATIENT),
+    AppointmentController.createAppointment
+)
+
+>>>>>>> part-4
 export const AppointmentRoutes = router;

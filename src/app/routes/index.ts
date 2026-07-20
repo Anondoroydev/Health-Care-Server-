@@ -8,7 +8,10 @@ import { DoctorRoutes } from '../modules/doctor/doctor.routes';
 import { AdminRoutes } from '../modules/admin/admin.routes';
 import { PatientRoutes } from '../modules/patient/patient.routes';
 import { AppointmentRoutes } from '../modules/appointment/appointment.routes';
+<<<<<<< HEAD
 import { PrescriptionRoutes } from '../modules/prescription/prescription.routes';
+=======
+>>>>>>> part-4
 
 
 const router = express.Router();
@@ -50,10 +53,13 @@ const moduleRoutes = [
         path: '/appointment',
         route: AppointmentRoutes
     },
+<<<<<<< HEAD
     {
         path: '/prescription',
         route: PrescriptionRoutes
     },
+=======
+>>>>>>> part-4
 ];
 
 moduleRoutes.forEach(route => router.use(route.path, route.route))
