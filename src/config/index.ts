@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({ path: path.join(process.cwd(), '.env') });
-
 export default {
     node_env: process.env.NODE_ENV,
     port: process.env.PORT,
@@ -10,12 +9,8 @@ export default {
     cloudinary: {
         api_secret: process.env.CLOUDINARY_API_SECRET,
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY
-    },
-<<<<<<< HEAD
-    openRouterApiKey: process.env.OPENROUTER_API_KEY,
-    stripeSecretKey: process.env.STRIPE_SECRET_KEY
-=======
-    openRouterApiKey: process.env.OPENROUTER_API_KEY
->>>>>>> part-4
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET
+    }
+
 }
