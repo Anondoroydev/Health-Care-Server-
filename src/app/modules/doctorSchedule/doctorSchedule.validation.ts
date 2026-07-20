@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import z from "zod";
 
-const create = z.object({
+const createDoctorScheduleValidationSchema = z.object({
     body: z.object({
-        scheduleIds: z.array(z.string()),
-    }),
-});
+        scheduleIds: z.array(z.string())
+    })
+})
 
 export const DoctorScheduleValidation = {
-    create,
-};
+    createDoctorScheduleValidationSchema
+}
