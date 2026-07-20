@@ -1,18 +1,18 @@
 import { Admin, Prisma, UserStatus } from "@prisma/client";
-import { paginationHelper } from "../../../helpers/paginationHelper";
-import prisma from "../../../shared/prisma";
-import { IPaginationOptions } from "../../interfaces/pagination";
 import { adminSearchAbleFields } from "./admin.constant";
 import { IAdminFilterRequest } from "./admin.interface";
+import { IOptions, paginationHelper } from "../../helper/paginationHelper";
+import { prisma } from "../../shared/prisma";
 
-const getAllFromDB = async (params: IAdminFilterRequest, options: IPaginationOptions) => {
+
+const getAllFromDB = async (params: IAdminFilterRequest, options: IOptions) => {
     const { page, limit, skip } = paginationHelper.calculatePagination(options);
     const { searchTerm, ...filterData } = params;
 
-    const andConditions: Prisma.AdminWhereInput[] = [];
+    const andCondions: Prisma.AdminWhereInput[] = [];
 
     if (params.searchTerm) {
-        andConditions.push({
+        andCondions.push({
             OR: adminSearchAbleFields.map(field => ({
                 [field]: {
                     contains: params.searchTerm,
@@ -23,7 +23,7 @@ const getAllFromDB = async (params: IAdminFilterRequest, options: IPaginationOpt
     };
 
     if (Object.keys(filterData).length > 0) {
-        andConditions.push({
+        andCondions.push({
             AND: Object.keys(filterData).map(key => ({
                 [key]: {
                     equals: (filterData as any)[key]
@@ -32,15 +32,15 @@ const getAllFromDB = async (params: IAdminFilterRequest, options: IPaginationOpt
         })
     };
 
-    andConditions.push({
+    andCondions.push({
         isDeleted: false
     })
 
-    //console.dir(andConditions, { depth: 'inifinity' })
-    const whereConditions: Prisma.AdminWhereInput = { AND: andConditions }
+    //console.dir(andCondions, { depth: 'inifinity' })
+    const whereConditons: Prisma.AdminWhereInput = { AND: andCondions }
 
     const result = await prisma.admin.findMany({
-        where: whereConditions,
+        where: whereConditons,
         skip,
         take: limit,
         orderBy: options.sortBy && options.sortOrder ? {
@@ -51,7 +51,7 @@ const getAllFromDB = async (params: IAdminFilterRequest, options: IPaginationOpt
     });
 
     const total = await prisma.admin.count({
-        where: whereConditions
+        where: whereConditons
     });
 
     return {
