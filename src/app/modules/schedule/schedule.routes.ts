@@ -13,12 +13,20 @@ router.get(
 
 router.post(
     "/",
+<<<<<<< HEAD
+    auth(UserRole.ADMIN),
+=======
+>>>>>>> origin/delvelopment
     ScheduleController.insertIntoDB
 )
 
 
 router.delete(
     "/:id",
+<<<<<<< HEAD
+    auth(UserRole.ADMIN),
+=======
+>>>>>>> origin/delvelopment
     ScheduleController.deleteScheduleFromDB
 )
 export const ScheduleRoutes = router;

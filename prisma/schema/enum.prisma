@@ -14,3 +14,18 @@ enum Gender {
     MALE
     FEMALE
 }
+<<<<<<< HEAD
+
+enum AppointmentStatus {
+    SCHEDULED
+    INPROGRESS
+    COMPLETED
+    CANCEL
+}
+
+enum PaymentStatus {
+    PAID
+    UNPAID
+}
+=======
+>>>>>>> origin/delvelopment

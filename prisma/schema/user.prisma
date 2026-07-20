@@ -49,7 +49,14 @@ model Doctor {
 
     user User @relation(fields: [email], references: [email])
 
+<<<<<<< HEAD
+    doctorSchedules   DoctorSchedules[]
+    doctorSpecialties DoctorSpecialties[]
+    appointments      Appointment[]
+    prescriptions     Prescription[]
+=======
     doctorSchedules DoctorSchedules[]
+>>>>>>> origin/delvelopment
 
     @@map("doctors")
 }
@@ -64,7 +71,13 @@ model Patient {
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
 
+<<<<<<< HEAD
+    user          User           @relation(fields: [email], references: [email])
+    appointments  Appointment[]
+    prescriptions Prescription[]
+=======
     user User @relation(fields: [email], references: [email])
+>>>>>>> origin/delvelopment
 
     @@map("patients")
 }

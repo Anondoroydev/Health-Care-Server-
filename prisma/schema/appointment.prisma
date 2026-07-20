@@ -1,0 +1,63 @@
+model Appointment {
+    id             String            @id @default(uuid())
+    patientId      String
+    patient        Patient           @relation(fields: [patientId], references: [id])
+    doctorId       String
+    doctor         Doctor            @relation(fields: [doctorId], references: [id])
+    scheduleId     String
+    schedule       Schedule          @relation(fields: [scheduleId], references: [id])
+    videoCallingId String
+    status         AppointmentStatus @default(SCHEDULED)
+    paymentStatus  PaymentStatus     @default(UNPAID)
+<<<<<<< HEAD
+    createdAt      DateTime          @default(now())
+    updatedAt      DateTime          @updatedAt
+=======
+    createAt       DateTime          @default(now())
+    updateAt       DateTime          @updatedAt
+>>>>>>> part-4
+    payment        Payment?
+    prescription   Prescription?
+
+    @@map("appointments")
+}
+
+model Payment {
+    id                 String        @id @default(uuid())
+    appointmentId      String        @unique
+    appointment        Appointment   @relation(fields: [appointmentId], references: [id])
+    amount             Float
+    transactionId      String        @unique
+    status             PaymentStatus @default(UNPAID)
+    paymentGatewayData Json?
+<<<<<<< HEAD
+    createdAt          DateTime      @default(now())
+    updatedAt          DateTime      @updatedAt
+=======
+    createAt           DateTime      @default(now())
+    updateAt           DateTime      @updatedAt
+>>>>>>> part-4
+
+    @@map("payments")
+}
+
+model Prescription {
+    id            String      @id @default(uuid())
+    appointmentId String      @unique
+    appointment   Appointment @relation(fields: [appointmentId], references: [id])
+    doctorId      String
+    doctor        Doctor      @relation(fields: [doctorId], references: [id])
+    patientId     String
+    patient       Patient     @relation(fields: [patientId], references: [id])
+    instructions  String
+    followUpDate  DateTime?
+<<<<<<< HEAD
+    createdAt     DateTime    @default(now())
+    updatedAt     DateTime    @updatedAt
+=======
+    createAt      DateTime    @default(now())
+    updateAt      DateTime    @updatedAt
+>>>>>>> part-4
+
+    @@map("prescriptions")
+}
