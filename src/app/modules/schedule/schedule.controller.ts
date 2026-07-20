@@ -1,64 +1,53 @@
 import { Request, Response } from "express";
-import httpStatus from "http-status";
-import catchAsync from "../../../shared/catchAsync";
-import pick from "../../../shared/pick";
-import sendResponse from "../../../shared/sendResponse";
-import { IAuthUser } from "../../interfaces/common";
+import catchAsync from "../../shared/catchAsync";
+import sendResponse from "../../shared/sendResponse";
 import { ScheduleService } from "./schedule.service";
+import pick from "../../helper/pick";
+import { IJWTPayload } from "../../types/common";
+
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-    const result = await ScheduleService.inserIntoDB(req.body);
+    const result = await ScheduleService.insertIntoDB(req.body);
 
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 201,
         success: true,
         message: "Schedule created successfully!",
         data: result
-    });
+    })
 });
 
-const getAllFromDB = catchAsync(async (req: Request & { user?: IAuthUser }, res: Response) => {
-    const filters = pick(req.query, ['startDate', 'endDate']);
-    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+
+const schedulesForDoctor = catchAsync(async (req: Request & { user?: IJWTPayload }, res: Response) => {
+    const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
+    const fillters = pick(req.query, ["startDateTime", "endDateTime"])
 
     const user = req.user;
-    const result = await ScheduleService.getAllFromDB(filters, options, user as IAuthUser);
+    const result = await ScheduleService.schedulesForDoctor(user as IJWTPayload, fillters, options);
 
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 200,
         success: true,
         message: "Schedule fetched successfully!",
-        data: result.data,
-        meta: result.meta
-    });
-});
+        meta: result.meta,
+        data: result.data
+    })
+})
 
-const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const result = await ScheduleService.getByIdFromDB(id);
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'Schedule retrieval successfully',
-        data: result,
-    });
-});
+const deleteScheduleFromDB = catchAsync(async (req: Request, res: Response) => {
+    const result = await ScheduleService.deleteScheduleFromDB(req.params.id);
 
-const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const result = await ScheduleService.deleteFromDB(id);
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 200,
         success: true,
-        message: 'Schedule deleted successfully',
-        data: result,
-    });
-});
+        message: "Schedule deleted successfully!",
+        data: result
+    })
+})
 
 
 export const ScheduleController = {
     insertIntoDB,
-    getAllFromDB,
-    getByIdFromDB,
-    deleteFromDB
-};
+    schedulesForDoctor,
+    deleteScheduleFromDB
+}

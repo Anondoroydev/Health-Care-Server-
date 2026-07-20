@@ -1,56 +1,58 @@
-import { Request, Response } from 'express';
-import sendResponse from '../../../shared/sendResponse';
-import httpStatus from 'http-status';
-import catchAsync from '../../../shared/catchAsync';
-import { DoctorService } from './doctor.service';
-import pick from '../../../shared/pick';
-import { doctorFilterableFields } from './doctor.constants';
+import { Request, Response } from "express";
+import catchAsync from "../../shared/catchAsync";
+import { IJWTPayload } from "../../types/common";
+import pick from "../../helper/pick";
+import { DoctorService } from "./doctor.service";
+import sendResponse from "../../shared/sendResponse";
+import { doctorFilterableFields } from "./doctor.constant";
+import { ca } from "zod/v4/locales";
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-    const filters = pick(req.query, doctorFilterableFields);
+    const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
+    const fillters = pick(req.query, doctorFilterableFields)
 
-    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-
-    const result = await DoctorService.getAllFromDB(filters, options);
+    const result = await DoctorService.getAllFromDB(fillters, options);
 
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 200,
         success: true,
-        message: 'Doctors retrieval successfully',
+        message: "Doctor fetched successfully!",
         meta: result.meta,
-        data: result.data,
-    });
-});
+        data: result.data
+    })
+})
+
+const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
+
+    const { id } = req.params;
+
+    const result = await DoctorService.updateIntoDB(id, req.body);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Doctor updated successfully!",
+        data: result
+    })
+})
+
 
 const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await DoctorService.getByIdFromDB(id);
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 200,
         success: true,
         message: 'Doctor retrieval successfully',
         data: result,
     });
 });
 
-const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
-
-    const { id } = req.params;
-    const result = await DoctorService.updateIntoDB(id, req.body);
-
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Doctor data updated!",
-        data: result
-    })
-});
-
 const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await DoctorService.deleteFromDB(id);
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 200,
         success: true,
         message: 'Doctor deleted successfully',
         data: result,
@@ -62,40 +64,28 @@ const softDelete = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await DoctorService.softDelete(id);
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 200,
         success: true,
         message: 'Doctor soft deleted successfully',
         data: result,
     });
 });
 
-const getAiSuggestion = catchAsync(async (req: Request, res: Response) => {
-    const { symptoms } = req.body;
-
-    // Basic validation
-    if (!symptoms || typeof symptoms !== 'string' || symptoms.trim().length < 5) {
-        return res.status(httpStatus.BAD_REQUEST).json({
-            success: false,
-            message: 'Please provide valid symptoms for doctor suggestion (minimum 5 characters).',
-        });
-    }
-
-    const result = await DoctorService.getAISuggestion({ symptoms: symptoms.trim() });
-
+const getAISuggestions = catchAsync(async (req: Request, res: Response) => {
+    const result = await DoctorService.getAISuggestions(req.body);
     sendResponse(res, {
-        statusCode: httpStatus.OK,
+        statusCode: 200,
         success: true,
-        message: 'AI doctor suggestions retrieved successfully',
+        message: 'AI suggestions fetched successfully',
         data: result,
     });
 });
 
-
 export const DoctorController = {
-    updateIntoDB,
     getAllFromDB,
+    updateIntoDB,
     getByIdFromDB,
     deleteFromDB,
     softDelete,
-    getAiSuggestion,
+    getAISuggestions
 }
