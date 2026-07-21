@@ -5,30 +5,45 @@ import config from "../../config";
 import { jwtHelpers } from "../../helpers/jwtHelpers";
 import ApiError from "../errors/ApiError";
 
-
 const auth = (...roles: string[]) => {
-    return async (req: Request & { user?: any }, res: Response, next: NextFunction) => {
-        try {
-            const token = req.headers.authorization || req.cookies.accessToken;
-            console.log({ token }, "from auth guard");
+  return async (
+    req: Request & { user?: any },
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const authHeader = req.headers.authorization;
 
-            if (!token) {
-                throw new ApiError(httpStatus.UNAUTHORIZED, "You are not authorized!")
-            }
+      let token: string | undefined;
 
-            const verifiedUser = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret)
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        token = authHeader.split(" ")[1];
+      } else {
+        token = req.cookies?.accessToken;
+      }
 
-            req.user = verifiedUser;
+      console.log({ token }, "from auth guard");
 
-            if (roles.length && !roles.includes(verifiedUser.role)) {
-                throw new ApiError(httpStatus.FORBIDDEN, "Forbidden!")
-            }
-            next()
-        }
-        catch (err) {
-            next(err)
-        }
+      if (!token) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, "You are not authorized!");
+      }
+
+      const verifiedUser = jwtHelpers.verifyToken(
+        token,
+        config.jwt.jwt_secret as Secret,
+      );
+
+      req.user = verifiedUser;
+
+      if (roles.length && !roles.includes(verifiedUser.role)) {
+        throw new ApiError(httpStatus.FORBIDDEN, "Forbidden!");
+      }
+
+      next();
+    } catch (err) {
+      next(err);
     }
+  };
 };
 
 export default auth;
