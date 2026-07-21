@@ -86,9 +86,9 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
   /*
-  EXPIRES_IN=7d 
+  EXPIRES_IN=7d
 
-REFRESH_TOKEN_EXPIRES_IN=1y 
+REFRESH_TOKEN_EXPIRES_IN=1y
   */
   const accessTokenExpiresIn = config.jwt.expires_in as string;
   const refreshTokenExpiresIn = config.jwt.refresh_token_expires_in as string;
